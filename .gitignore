@@ -55,3 +55,15 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Pycharm
+.idea/
+
+#
+# Patrick Area
+#
+
+patrick_area/*.csv
+patrick_area/carto/*.mml
+patrick_area/carto/*.xml
+patrick_area/carto/data
