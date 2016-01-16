@@ -9,19 +9,11 @@ __date__ = '12/17/14'
 The theme given must be a white on black map which white defines area
 to render.
 """
-
+import argparse
+from PIL import Image
 import mapnik
 import numpy as np
-import scipy.ndimage
-import argparse
-import os
-import tempfile
-import random
 
-TEMP_IMAGE = os.path.join(tempfile.gettempdir(),'~temp~image.tif')
-# TEMP_IMAGE = os.path.join('temp_image.tiff')
-
-tempfile._get_candidate_names()
 
 def render_bitmap(map_theme, tile_size):
     map = mapnik.Map(tile_size, tile_size)
@@ -33,11 +25,15 @@ def render_bitmap(map_theme, tile_size):
     image = mapnik.Image(tile_size, tile_size)
     mapnik.render(map, image)
 
-    image.save(TEMP_IMAGE)
+    raw_data = image.tostring()
+    pil_image = Image.frombuffer('RGBA', (tile_size, tile_size), raw_data,
+                                 'raw', 'RGBA', 0, 1)
+    del raw_data
+    pil_image = pil_image.convert(mode='L')
+    return np.array(pil_image)
 
 
-def read_bitmap(z, threshold=25):
-    image = scipy.ndimage.imread(TEMP_IMAGE, flatten=True)
+def read_bitmap(image, z, threshold=25):
     bitmap = image > threshold
     del image
     slices = np.transpose(np.nonzero(np.transpose(bitmap)))
@@ -60,9 +56,9 @@ def main():
     args = parser.parse_args()
 
     tile_size = 2 ** args.z
-    render_bitmap(args.map_theme, tile_size)
+    bitmap = render_bitmap(args.map_theme, tile_size)
 
-    slices = read_bitmap(args.z)
+    slices = read_bitmap(bitmap, args.z)
     for (x, y) in slices:
         args.render_list.write('%d,%d,%d\n' % (args.z, x, y))
 
