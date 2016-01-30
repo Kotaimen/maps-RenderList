@@ -1,7 +1,7 @@
 
 Map {
   background-color: black;
-  buffer-size: 256;
+  buffer-size: 16;
 }
 
 #render_area {
