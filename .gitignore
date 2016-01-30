@@ -62,8 +62,7 @@ target/
 #
 # Patrick Area
 #
-
-patrick_area/*.csv
-patrick_area/carto/*.mml
-patrick_area/carto/*.xml
-patrick_area/carto/data
+*_area/*.csv
+*_area/carto/*.mml
+*_area/carto/*.xml
+*_area/carto/data
