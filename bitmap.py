@@ -16,6 +16,7 @@ import numpy as np
 
 
 def render_bitmap(map_theme, tile_size):
+    assert tile_size<=32768
     map = mapnik.Map(tile_size, tile_size)
     mapnik.load_map(map, map_theme)
     # Zoom to EPSG:3857 bounding box

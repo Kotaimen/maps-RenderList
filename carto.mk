@@ -13,7 +13,7 @@ CLUSTERIFY = ../clusterify.py
 $(stylesheets) : $(wildcard *.yaml)
 
 %.csv : $(stylesheets) 
-	${PYTHON} ${BITMAP} -z $(lastword $(subst _, ,$(basename $@))) $< $@
+	${PYTHON} ${BITMAP} -z $(lastword $(subst _, ,$(basename $@))) carto/$(firstword $(subst _, ,$(basename $@))).xml $@
 	${PYTHON} ${CLUSTERIFY} $@
 
 clean :
